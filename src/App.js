@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 
-const BASE_API_URL = "https://voting-project-y1kj.onrender.com";
+const BASE_API_URL = "https://voting-project-y1kj.onrender.com/api";
 
 function App() {
   const [candidates, setCandidates] = useState([]);
   const [voted, setVoted] = useState(false);
   const [error, setError] = useState("");
-  
+
   // Fetch candidates
   const fetchCandidates = async () => {
     try {
