@@ -6,11 +6,11 @@ function App() {
   const [candidates, setCandidates] = useState([]);
   const [voted, setVoted] = useState(false);
   const [error, setError] = useState("");
-
+  const BASE_API_URL = "https://voting-project-y1kj.onrender.com/api";
   // Fetch candidates
   const fetchCandidates = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/candidates/");
+      const res = await axios.get(`${BASE_API_URL}/candidates/`);
       setCandidates(res.data);
     } catch (err) {
       console.error("Error fetching candidates:", err);
@@ -25,9 +25,7 @@ function App() {
 
   const handleVote = async (candidateId) => {
     try {
-      await axios.post("http://localhost:8000/api/vote/", {
-        candidate_id: candidateId,
-      });
+      await axios.post(`${BASE_API_URL}/vote/`, { candidate_id: candidateId });
       setVoted(true);
       fetchCandidates();
     } catch (err) {
