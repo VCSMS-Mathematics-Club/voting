@@ -8,6 +8,17 @@ function App() {
   const [candidates, setCandidates] = useState([]);
   const [voted, setVoted] = useState(false);
   const [error, setError] = useState("");
+  const [ipAddress, setIpAddress] = useState("");
+
+  // Fetch local IP address
+  const fetchIpAddress = async () => {
+    try {
+      const res = await axios.get("https://api64.ipify.org?format=json");
+      setIpAddress(res.data.ip);
+    } catch (err) {
+      console.error("Error fetching IP:", err);
+    }
+  };
 
   // Fetch candidates
   const fetchCandidates = async () => {
@@ -20,6 +31,7 @@ function App() {
   };
 
   useEffect(() => {
+    fetchIpAddress();
     fetchCandidates();
     const interval = setInterval(() => fetchCandidates(), 5000);
     return () => clearInterval(interval);
@@ -27,7 +39,10 @@ function App() {
 
   const handleVote = async (candidateId) => {
     try {
-      await axios.post(`${BASE_API_URL}/vote/`, { candidate_id: candidateId });
+      await axios.post(`${BASE_API_URL}/vote/`, {
+        candidate_id: candidateId,
+        ip_address: ipAddress, // Send local IP
+      });
       setVoted(true);
       fetchCandidates();
     } catch (err) {
